@@ -7,11 +7,14 @@ import { fetcher } from "../helpers/axios";
 import { getUser } from "../hooks/user.actions";
 import { Post } from "../components/posts";
 import CreatePost from "../components/posts/CreatePost";
+import ProfileCard from "../components/profile/ProfileCard";
 
 function Home() {
   const posts = useSWR("/post/", fetcher, {
     refreshInterval: 20000,
   });
+
+  const profiles = useSWR("/user/?limit=5", fetcher);
 
   const user = getUser();
 
@@ -42,6 +45,15 @@ function Home() {
               <Post key={index} post={post} refresh={posts.mutate} />
             ))}
           </Row>
+        </Col>
+        <Col sm={3} className="border rounded py-4 h-50">
+          <h4 className="font-weight-bold text-center">Suggested people</h4>
+          <div className="d-flex flex-column">
+            {profiles.data &&
+              profiles.data.results.map((profile, index) => (
+                <ProfileCard key={index} user={profile} />
+              ))}
+          </div>
         </Col>
       </Row>
     </Layout>
