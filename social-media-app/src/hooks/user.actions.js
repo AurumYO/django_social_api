@@ -34,22 +34,22 @@ function useUserActions() {
   // Edit the user
   function edit(data, userId) {
     return axiosService
-    .patch(`${baseURL}/user/${userId}`, data, {
-      headers: {
-        "cintent-type": "multipart/form-data",
-      },
-    })
-    .then((res) => {
-      // Registering the account in the store
-      localStorage.setItem(
-        "auth", 
-        JSON.stringify({
-          access: getAccessToken(),
-          refresh: getRefreshToken(),
-          user: res.data,
-        })
-      );
-    });
+      .patch(`${baseURL}/user/${userId}/`, data, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        // Registering the account in the store
+        localStorage.setItem(
+          "auth",
+          JSON.stringify({
+            access: getAccessToken(),
+            refresh: getRefreshToken(),
+            user: res.data,
+          })
+        );
+      });
   }
 
   // Logout the user
@@ -93,4 +93,10 @@ function setUserData(data) {
   );
 }
 
-export { useUserActions, getUser, getAccessToken, getRefreshToken };
+export {
+  useUserActions,
+  getUser,
+  getAccessToken,
+  getRefreshToken,
+  setUserData,
+};

@@ -41,11 +41,13 @@ function LoginForm() {
       noValidate
       validated={validated}
       onSubmit={handleSubmit}
+      data-testid="login-form"
     >
       <Form.Group className="mb-3">
         <Form.Label>Username</Form.Label>
         <Form.Control
           value={form.username}
+          data-testid="username-field"
           onChange={(e) => setForm({ ...form, username: e.target.value })}
           required
           type="text"
@@ -65,6 +67,7 @@ function LoginForm() {
           required
           type="password"
           placeholder="Password"
+          data-testid="password-field"
         />
         <Form.Control.Feedback type="invalid">
           Please provide a valid password.
