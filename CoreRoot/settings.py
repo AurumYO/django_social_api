@@ -13,12 +13,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = False if os.getenv("ENV") == "PROD" else True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG_MODE") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="*").split(",")
 
 
 # Application definition
@@ -75,22 +75,22 @@ WSGI_APPLICATION = "CoreRoot.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'postgres',
-#         'USER': 'postgres',
-#         'PASSWORD': 'LEmaGam073',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv("DB_NAME", "coredb"),  #'postgres',
+        'USER': os.getenv("DB_USER", "core"),  #'postgres',
+        'PASSWORD':  os.getenv("DB_PASSWORD", "LEmaGam073"),  #'LEmaGam073',
+        'HOST': os.environ.get("DB_HOST", "postagram_db"),  #'localhost',
+        'PORT': os.getenv("DB_PORT", "5432"),  #'5432',
+    }
+}
 
 
 # Password validation
