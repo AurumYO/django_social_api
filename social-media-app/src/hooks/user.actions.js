@@ -1,10 +1,10 @@
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import axiosService from "../helpers/axios";
+import axios from "axios";
 
 function useUserActions() {
   const navigate = useNavigate();
-  const baseURL = "http://localhost:8000/api";
+  const baseURL = process.env.REACT_APP_API_URL;
 
   return {
     login,
@@ -54,8 +54,12 @@ function useUserActions() {
 
   // Logout the user
   function logout() {
-    localStorage.removeItem("auth");
-    navigate("/login");
+    return axiosService
+      .post(`${baseURL}/auth/logout/`, { refresh: getRefreshToken() })
+      .then(() => {
+        localStorage.removeItem("auth");
+        navigate("/login");
+      });
   }
 }
 
